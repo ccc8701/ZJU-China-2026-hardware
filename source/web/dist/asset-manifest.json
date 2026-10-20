@@ -1,0 +1,42 @@
+{
+  "version": "tank-web-ui-1.15",
+  "built": "2026-10-16T02:25:05.957Z",
+  "assets": [
+    {
+      "path": "/index.html",
+      "file": "index.html",
+      "bytes": 15978,
+      "gzip_bytes": 4565,
+      "sha256": "ae9327eccc10ebb736e4e26cd8cacb8e3f657dde8ba87bf197b2bce4119e124d",
+      "gzip_sha256": "e0a9c0ab0ddecd02a6690ae0d96693c93ae3bbc922bc40edc30b13a460613772"
+    },
+    {
+      "path": "/style.css",
+      "file": "style.css",
+      "bytes": 32011,
+      "gzip_bytes": 7833,
+      "sha256": "95288508e1bda44c1a3c9dfcbb96e5c13fc387f5fcf9f86d7a39c64dd5a59cfe",
+      "gzip_sha256": "b0b44d59fe7908d6ee9abb5b09aebf6e8fe71334c4470c651d9b8745a818af5d"
+    },
+    {
+      "path": "/app.js",
+      "file": "app.js",
+      "bytes": 698556,
+      "gzip_bytes": 190524,
+      "sha256": "a0cc4bbdf7f7d84c6a7e36b87315c71d12f13c40b31aaa93c7982b862a013a37",
+      "gzip_sha256": "01f94787a48c71b148b23cf8348c3b98395f3289302a7ece55ac4b5c597a1f69"
+    }
+  ],
+  "gzip_total_bytes": 202922,
+  "dependencies": {
+    "three": "0.180.0",
+    "lucide": "0.468.0",
+    "esbuild": "0.25.10"
+  },
+  "source_urls": [
+    "https://threejs.org/",
+    "https://lucide.dev/",
+    "https://esbuild.github.io/"
+  ],
+  "no_external_runtime_requests": true
+}

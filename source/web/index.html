@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title data-i18n="page.title">FLOW / 储液罐控制台</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="储液罐控制台首页" data-i18n-aria-label="brand.home"><span class="brand-mark"><i data-lucide="waves"></i></span><span>FLOW<span class="brand-divider">/</span><span class="brand-cn" data-i18n="brand.name">储液罐控制台</span></span></a>
+    <div class="topbar-right"><span class="site-tag">TANK · 01</span><span class="connection" id="connection"><span class="status-dot"></span><span id="connectionText">正在连接</span></span><button class="language-toggle" id="languageToggle" type="button" aria-label="切换语言：中文 / English" data-i18n-aria-label="language.switch" aria-pressed="false"><span data-language="zh">中文</span><span class="language-divider">/</span><span data-language="en">EN</span></button><button class="icon-button" id="networkOpen" title="Wi-Fi 设置" aria-label="Wi-Fi 设置" data-i18n-title="network.settings" data-i18n-aria-label="network.settings"><i data-lucide="wifi"></i></button></div>
+  </header>
+  <main class="workspace">
+    <aside class="control-panel">
+      <div class="panel-heading"><div><div class="eyebrow" data-i18n="panel.eyebrow">设备控制面板</div><h1 data-i18n="panel.title">设备控制</h1></div><span class="small-chip" id="controlMode">实时设备</span></div>
+      <div class="mode-switch" role="group" aria-label="数据模式" data-i18n-aria-label="mode.group"><button class="active" id="realMode" data-i18n="mode.real">实时设备</button><button id="demoMode" data-i18n="mode.demo">3D 演示</button></div>
+      <div class="mode-note" id="modeNote"><i data-lucide="radio"></i><span>读取 STM32 反馈，操作等待设备确认。</span></div>
+
+      <section class="control-section">
+        <div class="section-title"><span class="section-number">01</span><h2 data-i18n="temperature.control">温度控制</h2><span class="state-tag" id="thermalTag">等待数据</span></div>
+        <div class="target-range"><label for="lowerInput"><span><span data-i18n="temperature.lower">温度下限</span> <small>LOW</small></span><div class="number-input"><input id="lowerInput" type="number" min="-40" max="85" step="0.5" value="25.00" inputmode="decimal" aria-label="温度下限" data-i18n-aria-label="temperature.lower"><span>°C</span></div></label><span class="range-separator">—</span><label for="upperInput"><span><span data-i18n="temperature.upper">温度上限</span> <small>HIGH</small></span><div class="number-input"><input id="upperInput" type="number" min="-40" max="85" step="0.5" value="30.00" inputmode="decimal" aria-label="温度上限" data-i18n-aria-label="temperature.upper"><span>°C</span></div></label></div>
+        <button class="button range-save" id="saveRange" data-operation="range"><i data-lucide="check"></i><span data-i18n="temperature.save">保存温区</span></button>
+        <div class="toggle-row"><div><strong data-i18n="temperature.auto">自动温控</strong><p id="autoDescription">根据设定温区自动控制</p></div><button class="switch" id="autoToggle" role="switch" aria-checked="false" aria-label="自动温控" data-i18n-aria-label="temperature.auto"><span></span></button></div>
+        <div class="manual-controls"><button class="actuator-button heat" id="heatToggle" data-operation="heat"><i data-lucide="flame"></i><span data-i18n="temperature.heat">加热</span><span class="actuator-value" id="heatValue">关闭</span></button><button class="actuator-button cool" id="coolToggle" data-operation="cool"><i data-lucide="snowflake"></i><span data-i18n="temperature.cool">冷却</span><span class="actuator-value" id="coolValue">关闭</span></button></div>
+        <p class="helper" data-i18n="temperature.manualHelp">手动加热 / 冷却会退出自动模式，两路互斥。</p>
+      </section>
+
+      <section class="control-section pump-section">
+        <div class="section-title"><span class="section-number">02</span><h2 data-i18n="pump.control">水泵控制</h2><span class="state-tag" id="pumpTag">等待数据</span></div>
+        <div class="pump-limit"><label for="pumpLimit" data-i18n="pump.limit">连续运行时限</label><div class="small-number"><input id="pumpLimit" type="number" min="1" max="300" step="1" value="30" inputmode="numeric" aria-label="泵连续运行时限" data-i18n-aria-label="pump.limitAria"><span data-i18n="unit.seconds">秒</span></div><button class="text-button" id="saveLimit" data-operation="pump_limit" data-i18n="pump.save">保存</button></div>
+        <div class="pump-actions"><button class="button button-primary" id="pumpStart" data-operation="pump"><i data-lucide="play"></i><span data-i18n="pump.start">启动水泵</span></button><button class="button" id="pumpStop"><i data-lucide="square"></i><span data-i18n="pump.stop">停止</span></button></div>
+        <div class="timer-row"><span><span data-i18n="pump.current">本次</span> <strong id="pumpCurrent">—</strong></span><span><span data-i18n="pump.total">累计</span> <strong id="pumpTotal">—</strong></span></div>
+      </section>
+
+      <section class="control-section level-section">
+        <div class="section-title"><span class="section-number">03</span><h2 data-i18n="level.monitor">液位监测</h2><span class="state-tag" id="levelTag">等待数据</span></div>
+        <div class="level-points"><div data-sensor="1"><span class="sensor-dot"></span><strong data-i18n="level.upper">上位</strong><small>H3</small><span class="wet-label">—</span></div><div data-sensor="2"><span class="sensor-dot"></span><strong data-i18n="level.middle">中位</strong><small>H4</small><span class="wet-label">—</span></div><div data-sensor="4"><span class="sensor-dot"></span><strong data-i18n="level.lower">下位</strong><small>H8</small><span class="wet-label">—</span></div></div>
+        <div class="liquid-indicator"><div class="traffic-lights"><span data-color="red"></span><span data-color="yellow"></span><span data-color="green"></span></div><span id="liquidText">等待三点液位数据</span></div>
+        <div class="demo-level" id="demoLevelControls" hidden><label data-i18n="level.demo">演示液位</label><div class="segmented"><button data-demo-level="0" data-i18n="level.demoEmpty">低于下位</button><button data-demo-level="4" data-i18n="level.demoLow">下–中</button><button data-demo-level="6" class="active" data-i18n="level.demoNormal">中–上</button><button data-demo-level="7" data-i18n="level.demoFull">满液</button></div></div>
+      </section>
+      <button class="stop-all" id="stopAll"><i data-lucide="octagon-x"></i><span data-i18n="stop.all">全部停止</span><span data-i18n="stop.caption">STOP ALL</span></button>
+      <div class="last-ack"><span class="ack-dot" id="ackDot"></span><span id="ackMessage">等待设备状态</span></div>
+    </aside>
+
+    <section class="visual-panel" aria-label="储液罐三维实时可视化" data-i18n-aria-label="view.aria">
+      <div class="visual-header"><div><div class="eyebrow" data-i18n="view.eyebrow">实时过程视图</div><h2><span data-i18n="view.title">看见每一个运行状态</span><span class="model-label" data-i18n="view.model">3D 透视</span></h2></div><div class="view-actions"><button class="icon-button" id="resetView" title="复位视角" aria-label="复位三维视角" data-i18n-title="view.reset" data-i18n-aria-label="view.resetAria"><i data-lucide="rotate-3d"></i></button><button class="icon-button" id="motionToggle" aria-pressed="false" title="减少动态效果" aria-label="减少动态效果" data-i18n-title="view.reduceMotion" data-i18n-aria-label="view.reduceMotion"><i data-lucide="pause"></i></button></div></div>
+      <div class="metrics">
+        <div class="metric"><span class="metric-icon temperature"><i data-lucide="thermometer"></i></span><div><span class="metric-label"><span id="tempLabel">实测温度</span> <small id="tempSource">AHT30</small></span><strong><span id="tempValue">—</span><small>°C</small></strong></div><div class="metric-mini" id="tempStatus">等待样本</div></div>
+        <div class="metric"><span class="metric-icon humidity"><i data-lucide="droplets"></i></span><div><span class="metric-label" data-i18n="humidity.label">相对湿度</span><strong><span id="humidityValue">—</span><small>%RH</small></strong></div></div>
+        <div class="metric metric-process"><span class="metric-icon process"><i data-lucide="activity"></i></span><div><span class="metric-label" data-i18n="process.label">运行状态</span><strong class="process-word" id="processValue">等待连接</strong><span class="process-description" id="processDescription">连接 ESP32 后显示设备反馈</span></div></div>
+      </div>
+
+      <div class="scene-wrap" id="sceneWrap">
+        <div id="scene" class="scene" aria-label="可拖动旋转、滚轮缩放的三维罐体" data-i18n-aria-label="view.sceneAria"></div>
+        <div class="scene-caption"><span class="live-badge" id="sceneLiveBadge"><span></span>LIVE</span><span id="sceneSource">STM32 实时反馈</span></div>
+        <div class="scene-legend"><span><b class="legend-dot water"></b><span data-i18n="legend.liquid">液体</span></span><span><b class="legend-dot heat"></b><span data-i18n="legend.heat">热流</span></span><span><b class="legend-dot cool"></b><span data-i18n="legend.cold">冷端吸热</span></span></div>
+        <section class="thermal-analysis" aria-label="传热场" data-i18n-aria-label="thermal.title">
+          <div class="thermal-analysis-head"><strong data-i18n="thermal.title">传热场</strong><span id="thermalFieldLabel" data-i18n="thermal.fieldLabel">三维示意温度场</span></div>
+          <div class="thermal-scale" aria-hidden="true"></div>
+          <div class="thermal-scale-labels"><span data-i18n="thermal.low">相对低温</span><span data-i18n="thermal.high">相对高温</span></div>
+          <strong class="thermal-flow-state" id="thermalFlowState">待机 · 温度均化</strong>
+          <p class="thermal-flow-note" id="thermalFlowNote">温差逐步扩散；示意场未标定功率、流速或局部温度。</p>
+          <div class="thermal-flow-legend"><span><i class="thermal-key volume"></i><span data-i18n="thermal.volume">体积温度场</span></span><span><i class="thermal-key flux"></i><span data-i18n="thermal.flux">热流方向</span></span><span><i class="thermal-key dissipation"></i><span data-i18n="thermal.dissipation">散热路径</span></span></div>
+        </section>
+        <div class="model-labels" id="modelLabels">
+          <div class="model-callout" data-label="upper"><span class="callout-anchor"></span><strong data-i18n="callout.upper">上位传感器</strong><small>H3 · <span data-label-value="upper">—</span></small></div>
+          <div class="model-callout" data-label="middle"><span class="callout-anchor"></span><strong data-i18n="callout.middle">中位传感器</strong><small>H4 · <span data-label-value="middle">—</span></small></div>
+          <div class="model-callout" data-label="lower"><span class="callout-anchor"></span><strong data-i18n="callout.lower">下位传感器</strong><small>H8 · <span data-label-value="lower">—</span></small></div>
+          <div class="model-callout" data-label="aht"><span class="callout-anchor"></span><strong>AHT30</strong><small data-i18n="callout.aht">温度 / 湿度</small></div>
+          <div class="model-callout" data-label="pump"><span class="callout-anchor"></span><strong data-i18n="callout.pump">出液水泵</strong><small>CH1 · <span data-label-value="pump">—</span></small></div>
+          <div class="model-callout" data-label="heater"><span class="callout-anchor"></span><strong data-i18n="callout.heater">侧贴陶瓷片</strong><small><span id="heaterChannel">CH2</span> · <span data-label-value="heater">—</span></small></div>
+          <div class="model-callout" data-label="cooler"><span class="callout-anchor"></span><strong data-i18n="callout.cooler">制冷组件与风扇</strong><small><span id="coolerChannel">CH3</span> · <span data-label-value="cooler">—</span></small></div>
+          <div class="model-callout" data-label="cabinet"><span class="callout-anchor"></span><strong data-i18n="callout.cabinet">控制柜</strong><small data-i18n="callout.cabinetInfo">电源 / 控制</small></div>
+        </div>
+        <div class="scene-disconnected" id="sceneDisconnected"><i data-lucide="unplug"></i><strong>等待设备连接</strong><span>状态恢复后，模型将继续跟随设备反馈。</span><button class="button" id="tryDemo"><span data-i18n="view.tryDemo">先体验 3D 演示</span><i data-lucide="arrow-up-right"></i></button></div>
+        <div class="scene-hint"><i data-lucide="move"></i><span data-i18n="view.hint">拖动旋转 · 滚轮缩放</span></div>
+        <div class="level-caption"><i data-lucide="info"></i><span id="levelCaption">液面表示三点液位区间；水流与传热场按运行状态示意。</span></div>
+      </div>
+
+      <div class="process-strip"><div class="strip-item" id="stripAuto"><span class="strip-icon"><i data-lucide="sliders-horizontal"></i></span><div><small data-i18n="strip.control">控制模式</small><strong id="stripAutoValue">等待状态</strong></div><span class="strip-dot"></span></div><div class="strip-item" id="stripHeat"><span class="strip-icon"><i data-lucide="flame"></i></span><div><small id="stripHeaterChannel">HEATER · CH2</small><strong id="stripHeatValue">等待状态</strong></div><span class="strip-dot"></span></div><div class="strip-item" id="stripCool"><span class="strip-icon"><i data-lucide="snowflake"></i></span><div><small id="stripCoolerChannel">COOLER · CH3</small><strong id="stripCoolValue">等待状态</strong></div><span class="strip-dot"></span></div><div class="strip-item" id="stripPump"><span class="strip-icon"><i data-lucide="waves"></i></span><div><small data-i18n="strip.pump">水泵 · CH1</small><strong id="stripPumpValue">等待状态</strong></div><span class="strip-dot"></span></div></div>
+      <footer class="visual-footer"><span><i data-lucide="cpu"></i>ESP32 <span class="link-line"></span> UART <span class="link-line"></span> STM32</span><span id="lastUpdated">尚未收到状态</span><span id="firmwareInfo">FLOW / 01</span></footer>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span></span></div>
+  <dialog id="networkDialog"><div class="dialog-heading"><div><div class="eyebrow" data-i18n="network.eyebrow">本地网络</div><h2 data-i18n="network.title">连接设备热点</h2></div><button class="icon-button" type="button" id="networkClose" aria-label="关闭连接信息" data-i18n-aria-label="network.close"><i data-lucide="x"></i></button></div><p data-i18n="network.intro">手机或电脑连接以下热点，在浏览器打开设备地址。网页和三维模型均由 ESP32 本地提供。</p><div class="network-info"><div><span data-i18n="network.ssid">Wi-Fi 名称</span><strong id="apInfo">TankLab-ESP32</strong></div><div><span data-i18n="network.password">Wi-Fi 密码</span><strong>tanklab2026</strong></div><div><span data-i18n="network.address">设备地址</span><strong id="apAddress">http://192.168.4.1/</strong></div></div><p class="helper" data-i18n="network.helper">连接后无需访问互联网。3D 演示仅在浏览器中运行，实时设备模式通过 UART 获取 STM32 反馈。</p><button class="button button-primary" type="button" id="networkDone" data-i18n="network.done">知道了</button></dialog>
+</body>
+</html>

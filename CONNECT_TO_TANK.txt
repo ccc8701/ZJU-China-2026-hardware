@@ -1,0 +1,16 @@
+CONNECTING TO THE TANK CONTROL PAGE
+
+Wi-Fi network name (SSID): TankLab-ESP32
+Default Wi-Fi password: tanklab2026
+Tank control page: http://192.168.4.1/
+
+1. Power on the tank system and wait for the ESP32 to start.
+2. Open the Wi-Fi settings on your phone or computer. Connect to TankLab-ESP32 using the password above.
+3. If your device reports "No Internet", choose to stay connected. Do not switch to another Wi-Fi network.
+4. Open a browser and enter http://192.168.4.1/ in the address bar.
+
+Use http://, not https://.
+If the page does not open, check that the tank is powered on and your device is still connected to TankLab-ESP32.
+The ESP32-S3 hosts the control page. The STM32 communicates with it over UART and has no separate web address.
+http://127.0.0.1:8421/ is only a preview on the development computer; it is not the tank's device address.
+These settings match the ESP32-S3 v1.15 firmware in this repository. Use your updated settings if you change its access-point configuration.
