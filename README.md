@@ -30,6 +30,7 @@ The default connection settings for the ESP32-S3 v1.15 firmware are:
 The ESP32-S3 hosts the control page. The STM32 communicates with the ESP32 over UART and does not have a separate web address.
 These settings match the firmware in this repository. If you change its access-point configuration, use your updated network name, password and address.
 
+
 ## Software notes
 
 Keep `esp32_web` and `web` next to each other. Build instructions are in their READMEs.
